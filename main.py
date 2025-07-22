@@ -1,10 +1,14 @@
+import random
 
 def verificar_palabra(palabra_secreta, intento):
 
     resultado = []
 
     if intento == palabra_secreta:
-            print("Ganaste")
+        print("Ganaste")
+        for i in range(len(palabra_secreta)):
+            resultado.append("🟩")
+        return resultado  
 
     for i in range(len(palabra_secreta)):
         if intento[i] == palabra_secreta[i]:
@@ -17,10 +21,12 @@ def verificar_palabra(palabra_secreta, intento):
             resultado.append("⬜️")
 
     print("".join(resultado))
+    return resultado
 
 def play():
     print("🃏 Bienvenido a Wordle!")
-    palabra_secreta = "PYTHON"
+    opciones = ['REACT', 'MANGO', 'PATIO', 'CORRAL', 'ARBOL', 'SANCO']
+    palabra_secreta = random.choice(opciones)
     longitud_palabra_secreta = len(palabra_secreta)
     intentos = 6
 
@@ -32,21 +38,30 @@ def play():
 
     print("-" * 40)
 
-    while True: # No es una mala idea.
+    for intento_numero in range(intentos):
 
-        intento = input("\nHola cual es la palabra que quieres probar? 🤠\n")
+        while True: # No es una mala idea.
 
-        if len(intento) != longitud_palabra_secreta:
-            print(f"La palabra debe tener {longitud_palabra_secreta} letras.")
-            continue
+            intento = input("\nHola cual es la palabra que quieres probar? 🤠\n")
 
-        if not intento.isalpha():
-            print("La palabra solo debe contener letras.")
-            continue
+            if len(intento) != longitud_palabra_secreta:
+                print(f"La palabra debe tener {longitud_palabra_secreta} letras.")
+                continue
 
-        intento = intento.upper() # La volvemos mayuscula
-        break
+            if not intento.isalpha():
+                print("La palabra solo debe contener letras.")
+                continue
 
-    verificar_palabra(palabra_secreta, intento)
+            intento = intento.upper() # La volvemos mayuscula
+            break
+
+        resultado = verificar_palabra(palabra_secreta, intento)
+
+        if all( letra == "🟩" for letra in resultado ):
+            print("🎉 Felicitaciones haz ganado!")
+            return True
+    
+    print("Se acabaron los intentos 😭")
+    return False
 
 play()
